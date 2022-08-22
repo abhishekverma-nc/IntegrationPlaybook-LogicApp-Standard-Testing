@@ -18,7 +18,7 @@ namespace LogicApp.Testing.Example
         public void GreenPath()
         {
             var startDateTime = DateTime.UtcNow;
-           // Thread.Sleep(new TimeSpan(0, 0, 10)); //Sleep here to handle any clock sync issues
+            Thread.Sleep(new TimeSpan(0, 0, 10)); //Sleep here to handle any clock sync issues
 
             Console.WriteLine($"Date for start of test: {startDateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")}");
 
