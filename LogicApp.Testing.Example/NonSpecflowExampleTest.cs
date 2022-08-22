@@ -2,6 +2,7 @@
 using IPB.LogicApp.Standard.Testing.Model.WorkflowRunOverview;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -17,7 +18,7 @@ namespace LogicApp.Testing.Example
         public void GreenPath()
         {
             var startDateTime = DateTime.UtcNow;
-            Thread.Sleep(new TimeSpan(0, 0, 10)); //Sleep here to handle any clock sync issues
+           // Thread.Sleep(new TimeSpan(0, 0, 10)); //Sleep here to handle any clock sync issues
 
             Console.WriteLine($"Date for start of test: {startDateTime.ToString("yyyy-MM-ddTHH:mm:ss.fffffffZ")}");
 
@@ -27,8 +28,8 @@ namespace LogicApp.Testing.Example
 
             //I have a message to send to the workflow
             var message = new Dictionary<string, object>();
-            message.Add("first_name", "mike");
-            message.Add("last_name", "stephenson");
+            message.Add("first_name", "abhishek");
+            message.Add("last_name", "verma");
             var requestJson = JsonConvert.SerializeObject(message);
 
             //Send a message to the workflow
@@ -62,6 +63,9 @@ namespace LogicApp.Testing.Example
             var actionStatusJson = logicAppTestManager.GetActionJson("Response");
             var inputMessage = logicAppTestManager.GetActionInputMessage("Response");
             var outputMessage = logicAppTestManager.GetActionOutputMessage("Response");
+            var des = (JObject)JsonConvert.DeserializeObject(outputMessage);
+            var body = des["body"].ToString(Formatting.None);
+            Assert.AreEqual(requestJson,body);
 
             var runsSince = logicAppTestManager.GetRunsSince(startDateTime);
             Assert.IsTrue(runsSince.Value.Count > 0);
